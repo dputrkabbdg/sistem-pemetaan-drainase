@@ -139,7 +139,9 @@
         <div><div class="brand-name">SiPe<span>Das</span></div><span class="brand-sub">Portal Aplikasi Terpadu</span></div>
       </a>
       <nav class="nav-links" id="navLinks" aria-label="Navigasi utama">
+        <!-- INI KUNCINYA: href="#rpjmd" akan scroll halus ke bawah tanpa reload halaman -->
         <a class="nav-link active" href="#rpjmd" data-section="rpjmd">RPJMD</a>
+        
         <div class="nav-dropdown" data-dropdown>
           <button class="nav-link" type="button" aria-expanded="false">Progres <i class="fa-solid fa-chevron-down"></i></button>
           <div class="dropdown-menu">
@@ -253,16 +255,19 @@
             </div>
           </div>
           <div class="frame-wrap" id="frameWrap">
+            <!-- PERUBAHAN DI SINI: src diarahkan ke file lokal rpjmd/index.html -->
             <iframe id="rpjmdFrame" title="Dashboard RPJMD SiPeDas"
-              src="https://script.google.com/macros/s/AKfycbzhCXPY0bX9YTZU9M5RSBYrWrMDipc_jSsbbOW6ALSVPma1YPl53DyE2gI1poTKov26lQ/exec"
+              src="rpjmd/index.html"
               loading="lazy" referrerpolicy="strict-origin-when-cross-origin"
               allow="clipboard-read; clipboard-write"></iframe>
+            
             <div class="frame-fallback" id="frameFallback">
               <div class="fallback-card">
                 <div class="fallback-icon"><i class="fa-solid fa-window-maximize"></i></div>
                 <h3>RPJMD siap dibuka</h3>
-                <p>Jika halaman Google Sites tidak tampil di dalam portal, buka dashboard RPJMD secara langsung melalui tombol di bawah. Hal ini dapat terjadi karena pengaturan keamanan atau pembatasan iframe.</p>
-                <a class="primary-btn" href="https://script.google.com/macros/s/AKfycbzhCXPY0bX9YTZU9M5RSBYrWrMDipc_jSsbbOW6ALSVPma1YPl53DyE2gI1poTKov26lQ/exec" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-arrow-up-right-from-square"></i> Buka Dashboard RPJMD</a>
+                <p>Jika halaman tidak tampil di dalam portal, buka dashboard RPJMD secara langsung melalui tombol di bawah.</p>
+                <!-- PERUBAHAN DI SINI: href juga diarahkan ke file lokal -->
+                <a class="primary-btn" href="rpjmd/index.html" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-arrow-up-right-from-square"></i> Buka Dashboard RPJMD</a>
               </div>
             </div>
           </div>
@@ -294,14 +299,8 @@
   </footer>
 
   <script>
-    /*
-      PENGATURAN LINK APLIKASI
-      1. Ganti URL '#' dengan link aplikasi masing-masing.
-      2. Untuk menambah aplikasi, salin satu objek dan ubah judul, deskripsi, ikon, kategori, serta url.
-      3. URL '#' akan menampilkan pemberitahuan bahwa tautan belum diisi.
-    */
     const applications = [
-      { title: "RPJMD Dashboard", description: "Monitoring dan evaluasi program perangkat daerah.", category: "Perencanaan", icon: "fa-chart-column", url: "https://script.google.com/macros/s/AKfycbzhCXPY0bX9YTZU9M5RSBYrWrMDipc_jSsbbOW6ALSVPma1YPl53DyE2gI1poTKov26lQ/exec" },
+      { title: "RPJMD Dashboard", description: "Monitoring dan evaluasi program perangkat daerah.", category: "Perencanaan", icon: "fa-chart-column", url: "rpjmd/index.html" },
       { title: "Progres Kegiatan TA 2026", description: "Pantau progres pelaksanaan kegiatan tahun anggaran 2026.", category: "Monitoring", icon: "fa-chart-line", url: "https://script.google.com/macros/s/AKfycbx5RDVnjMMSxA84jDQQpFTY3GMmSAkIxFiOdKEpOgxUiuVYwyHQHCM7rvi6X17yKFvmVw/exec" },
       { title: "Progres Kegiatan TA 2025", description: "Arsip monitoring progres kegiatan tahun anggaran 2025.", category: "Monitoring", icon: "fa-chart-line", url: "https://script.google.com/macros/s/AKfycbxcqAwbNuxug9t053AKGk4-3J9jPhe5a-T-LpSiS0iIUXnMam0Nnp4UV_ah7mzuv0iQZg/exec" },
       { title: "Progres Kegiatan TA 2027 (Rencana)", description: "Rencana monitoring kegiatan untuk tahun anggaran 2027.", category: "Perencanaan", icon: "fa-calendar-check", url: "https://script.google.com/macros/s/AKfycbxlpOL7XtnV-PUoy0FbM9rsfH5gSs2UQ7vBE_jCEYEc_-PrgrthTz7tQh-Uf8ypc5XxkQ/exec" },
@@ -355,14 +354,16 @@
       frame.src = frame.src;
       document.getElementById("frameFallback").style.display = "none";
     });
-    // Fallback hanya sebagai bantuan manual; browser tidak mengizinkan portal membaca status halaman lintas domain.
+    
     document.getElementById("topSearch").addEventListener("click", () => {
       search.focus();
       document.getElementById("aplikasi").scrollIntoView({ behavior: "smooth" });
     });
+    
     document.getElementById("menuToggle").addEventListener("click", () => {
       document.getElementById("navLinks").classList.toggle("open");
     });
+    
     document.querySelectorAll(".nav-link").forEach(link => {
       link.addEventListener("click", () => {
         if (link.tagName === "A" && link.getAttribute("href") === "#rpjmd") {
@@ -388,6 +389,7 @@
         }
       });
     });
+    
     document.querySelectorAll("[data-subdropdown] > button").forEach(button => {
       button.addEventListener("click", (event) => {
         event.stopPropagation();
@@ -404,6 +406,7 @@
         }
       });
     });
+    
     document.addEventListener("click", (event) => {
       if (!event.target.closest("[data-dropdown]")) {
         document.querySelectorAll("[data-dropdown]").forEach(item => {
@@ -413,19 +416,17 @@
         });
       }
     });
+    
     document.querySelectorAll(".placeholder-link").forEach(button => {
       button.addEventListener("click", () => {
         alert("Tautan untuk menu ini belum diisi. Setelah URL aplikasinya tersedia, tautan dapat ditambahkan pada bagian navbar di index.html.");
       });
     });
+    
     document.querySelectorAll(".nav-links a").forEach(link => {
       if (link.target === "_blank") link.addEventListener("click", () => {
         document.getElementById("navLinks").classList.remove("open");
       });
-    });
-    // Jika iframe dibatasi, pengguna tetap dapat membuka RPJMD melalui tombol "Buka halaman penuh".
-    document.getElementById("rpjmdFrame").addEventListener("error", () => {
-      document.getElementById("frameFallback").style.display = "flex";
     });
   </script>
 </body>
