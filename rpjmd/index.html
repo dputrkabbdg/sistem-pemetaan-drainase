@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0D372A">
+  <title>SiPeDas | RPJMD Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--primary-color:#0D372A;--primary-light:#1a5f4a;--primary-soft:#d4f1e8;--secondary-color:#64748b;--success-color:#10b981;--accent-color:#14b8a6;--dark-color:#1e293b}
+    *{font-family:'Inter',sans-serif} body{background:linear-gradient(135deg,#e8f5e9 0%,#d1fae5 50%,#c7f5f0 100%);min-height:100vh;padding-bottom:50px;color:#334155}
+    .navbar-custom{background:rgba(255,255,255,.96)!important;backdrop-filter:blur(10px);box-shadow:0 4px 12px rgba(13,55,42,.1)}
+    .navbar-brand{color:var(--primary-color)!important;font-weight:800;letter-spacing:-.3px}
+    .hero-section{background:linear-gradient(115deg,#0D372A 0%,#1a5f4a 55%,#14b8a6 100%);color:#fff;padding:40px 0 30px;margin-bottom:30px;position:relative;overflow:hidden}
+    .hero-section:before,.hero-section:after{content:'';position:absolute;border-radius:50%;pointer-events:none}.hero-section:before{top:-260px;right:-70px;width:540px;height:540px;background:rgba(255,255,255,.045)}.hero-section:after{bottom:-330px;left:-80px;width:500px;height:500px;background:rgba(20,184,166,.12)}
+    .hero-content{position:relative;z-index:1}.hero-title{font-weight:800;font-size:clamp(1.45rem,3vw,2.15rem);letter-spacing:-.7px;margin-bottom:7px;text-shadow:0 2px 4px rgba(0,0,0,.15)}.hero-subtitle{font-size:1rem;opacity:.95}
+    .main-card{background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(13,55,42,.12);border:0;overflow:hidden;position:relative}.main-card:before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#0D372A,#14b8a6)}
+    .card-header-custom{background:linear-gradient(135deg,#0D372A,#1a5f4a);color:#fff;padding:25px 30px;border:0;position:relative}
+    .action-buttons{display:flex;gap:9px;flex-wrap:wrap}.btn-export{padding:9px 15px;border-radius:9px;font-weight:650;font-size:.84rem;transition:all .2s ease;border:0;cursor:pointer}.btn-export:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.16)}
+    .btn-excel{background:linear-gradient(135deg,#10b981,#34d399);color:white}.btn-pdf{background:linear-gradient(135deg,#ef4444,#f87171);color:white}.btn-print{background:linear-gradient(135deg,#3b82f6,#60a5fa);color:white}.btn-refresh{background:linear-gradient(135deg,#f59e0b,#fbbf24);color:white}
+    .search-box{position:relative;min-width:clamp(220px,32vw,420px)}.search-box input{padding:11px 14px 11px 43px;border-radius:12px;border:2px solid #e2e8f0;transition:all .2s;background:rgba(255,255,255,.96)}.search-box input:focus{border-color:#14b8a6;box-shadow:0 0 0 4px rgba(20,184,166,.14)}.search-box>i{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:var(--secondary-color)}
+    .table-container{overflow:auto;max-height:calc(100vh - 350px);min-height:180px}.table-custom{margin-bottom:0;width:100%}.table-custom thead th{background:linear-gradient(180deg,#f0fdf4,#ecfdf5);color:#0D372A;font-weight:750;text-transform:uppercase;font-size:.74rem;letter-spacing:.35px;padding:16px;border-bottom:2px solid #14b8a6;white-space:nowrap;position:sticky;top:0;z-index:10}
+    .table-custom tbody td{padding:14px 16px;vertical-align:middle;border-bottom:1px solid #edf2f7;font-size:.88rem;color:#334155;min-width:120px}.table-custom tbody tr{transition:background .15s;background:white}.table-custom tbody tr:hover{background:#f0fdf7}.badge-program{background:linear-gradient(135deg,#0D372A,#1a5f4a);color:#fff;padding:7px 13px;border-radius:8px;font-weight:650;font-size:.8rem;display:inline-block;white-space:normal;max-width:320px;line-height:1.4;box-shadow:0 2px 4px rgba(13,55,42,.15)}
+    .badge-target{background:linear-gradient(135deg,#d4f1e8,#a7f3d0);color:#065f46;padding:5px 10px;border-radius:7px;font-weight:750;font-size:.84rem;white-space:nowrap;border:1px solid #6ee7b7}.badge-realization{background:linear-gradient(135deg,#ccfbf1,#99f6e4);color:#115e59;padding:5px 10px;border-radius:7px;font-weight:750;font-size:.84rem;white-space:nowrap;border:1px solid #5eead4}
+    .loading-spinner{display:none;text-align:center;padding:55px 20px}.loading-spinner.show{display:block}.error-message{display:none;background:linear-gradient(135deg,#fee2e2,#fecaca);color:#991b1b;padding:20px;border-radius:12px;margin:20px;font-weight:500;border-left:4px solid #dc2626}.error-message.show{display:block}.fade-in{animation:fadeIn .35s ease-out both}@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    .toast-container{position:fixed;bottom:20px;right:20px;z-index:1055}.toast-custom{background:white;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.2);border-left:4px solid #10b981}.status-line{font-size:.8rem;color:#64748b;padding:10px 16px;background:#fbfefd;border-top:1px solid #eef2f7}
+    @media(max-width:768px){.hero-section{padding:30px 0 24px}.card-header-custom{padding:20px}.action-buttons{width:100%;margin-top:2px}.search-box{min-width:100%;width:100%}.table-container{max-height:none}.table-custom thead th,.table-custom tbody td{padding:10px;font-size:.78rem}.badge-program{max-width:210px;font-size:.75rem}.btn-export{padding:7px 11px;font-size:.78rem}}
+    @media print{body{background:white;padding:0}.navbar-custom,.hero-section,.action-buttons,.search-box,.toast-container,.status-line{display:none!important}.main-card{box-shadow:none;border:1px solid #ddd}.card-header-custom{background:#0D372A!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}.table-custom thead th{background:#f0fdf4!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}.badge-program,.badge-target,.badge-realization{-webkit-print-color-adjust:exact;print-color-adjust:exact}.main-card:before{display:none}.table-container{max-height:none;overflow:visible}}
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+    <div class="container-fluid px-3 px-lg-4">
+      <a class="navbar-brand" href="./"><i class="bi bi-grid-3x3-gap-fill me-2"></i>SiPeDas <span class="fw-normal text-secondary">| RPJMD</span></a>
+      <div class="d-flex gap-2">
+        <a class="btn btn-outline-success btn-export" href="../" title="Kembali ke portal SiPeDas"><i class="bi bi-house-door me-1"></i><span class="d-none d-sm-inline">Portal</span></a>
+        <button class="btn btn-refresh btn-export" onclick="refreshData()"><i class="bi bi-arrow-clockwise me-1"></i> Refresh</button>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero-section"><div class="container-fluid px-3 px-lg-4 hero-content"><div class="row align-items-center"><div class="col-lg-8"><h1 class="hero-title">Rencana Pembangunan Jangka Menengah Daerah</h1><p class="hero-subtitle mb-0">Monitoring dan Evaluasi Program Perangkat Daerah</p></div><div class="col-lg-4 text-lg-end mt-3 mt-lg-0"><span class="badge bg-white text-dark px-3 py-2 rounded-pill shadow-sm"><i class="bi bi-clock-history me-2"></i>Update: <span id="lastUpdate">-</span></span></div></div></div></header>
+
+  <main class="container-fluid px-3 px-lg-4"><section class="main-card fade-in">
+    <div class="card-header-custom"><div class="row align-items-center"><div class="col-xl-4 mb-3 mb-xl-0"><h4 class="mb-0 fw-bold"><i class="bi bi-table me-2"></i>Data Tabel RPJMD</h4></div><div class="col-xl-8"><div class="d-flex flex-column flex-xl-row gap-3 align-items-xl-center justify-content-xl-end"><div class="search-box"><i class="bi bi-search"></i><input type="search" class="form-control" id="searchInput" placeholder="Cari data..." aria-label="Cari data RPJMD"></div><div class="action-buttons"><button class="btn-export btn-excel" onclick="exportToExcel()" title="Export ke Excel"><i class="bi bi-file-earmark-excel me-1"></i> Excel</button><button class="btn-export btn-pdf" onclick="exportToPDF()" title="Export ke PDF"><i class="bi bi-file-earmark-pdf me-1"></i> PDF</button><button class="btn-export btn-print" onclick="printTable()" title="Cetak"><i class="bi bi-printer me-1"></i> Print</button></div></div></div></div></div>
+    <div class="card-body p-0"><div id="loadingSpinner" class="loading-spinner show"><div class="spinner-border" role="status" style="width:3rem;height:3rem;color:#0D372A"><span class="visually-hidden">Memuat...</span></div><p class="mt-3 text-muted fw-medium mb-0">Memuat data dari spreadsheet...</p></div><div id="errorMessage" class="error-message"><i class="bi bi-exclamation-triangle-fill me-2"></i><span id="errorText"></span><div class="mt-3"><button class="btn btn-sm btn-outline-danger" onclick="loadData()"><i class="bi bi-arrow-clockwise me-1"></i>Coba lagi</button></div></div><div id="tableContainer" class="table-container" style="display:none"><table class="table table-custom" id="dataTable"><thead><tr id="tableHeaderRow"></tr></thead><tbody id="tableBody"></tbody></table></div><div id="statusLine" class="status-line" style="display:none"></div></div>
+  </section></main>
+
+  <div class="toast-container"><div id="exportToast" class="toast toast-custom" role="status" aria-live="polite" aria-atomic="true"><div class="toast-header"><i class="bi bi-check-circle-fill text-success me-2" id="toastIcon"></i><strong class="me-auto" style="color:#0D372A">SiPeDas</strong><button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Tutup"></button></div><div class="toast-body" id="toastMessage">Data berhasil diproses.</div></div></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.5.31/dist/jspdf.plugin.autotable.min.js"></script>
+  <script>
+    // Ganti dengan URL Web App /exec dari project Apps Script RPJMD.
+    const API_URL = 'https://script.google.com/macros/s/AKfycbzkEaIUxsrRxeRsEnf4YXxriKEutE7Nvmk_PD7RLvAJsFAKFPfUD4PoEyckRLjDOmnBAw/exec';
+    let allData = [], tableHeaders = [], toast = null, requestCounter = 0;
+
+    document.addEventListener('DOMContentLoaded', function () {
+      toast = new bootstrap.Toast(document.getElementById('exportToast'));
+      document.getElementById('searchInput').addEventListener('input', function (event) { filterData(event.target.value.toLowerCase().trim()); });
+      loadData();
+    });
+
+    // JSONP menghindari masalah CORS umum saat halaman GitHub memanggil Apps Script lintas domain.
+    function loadData() {
+      showLoading(true); hideError(); showTable(false);
+      const requestId = ++requestCounter;
+      const callbackName = 'sipedasRpjmdCallback_' + Date.now() + '_' + requestId;
+      const script = document.createElement('script');
+      let finished = false;
+      const timeout = window.setTimeout(function () { finishError('Permintaan data melewati batas waktu. Periksa deployment Web App dan izin akses Apps Script.'); }, 30000);
+
+      function cleanup() {
+        window.clearTimeout(timeout);
+        if (script.parentNode) script.parentNode.removeChild(script);
+        try { delete window[callbackName]; } catch (_) { window[callbackName] = undefined; }
+      }
+      function finishError(message) {
+        if (finished) return;
+        finished = true; cleanup(); showLoading(false); showError(message);
+      }
+
+      window[callbackName] = function (response) {
+        if (finished || requestId !== requestCounter) return;
+        finished = true; cleanup(); showLoading(false);
+        if (response && response.success) {
+          allData = Array.isArray(response.data) ? response.data : [];
+          tableHeaders = Array.isArray(response.headers) ? response.headers : [];
+          document.getElementById('lastUpdate').textContent = response.lastUpdate || '-';
+          renderTable(allData, tableHeaders); showTable(true);
+          const status = document.getElementById('statusLine');
+          status.textContent = allData.length.toLocaleString('id-ID') + ' baris data'; status.style.display = 'block';
+        } else {
+          showError((response && response.message) || 'Terjadi kesalahan saat mengambil data.');
+        }
+      };
+      script.onerror = function () { finishError('Tidak dapat menghubungi backend Apps Script. Pastikan URL /exec benar dan Web App sudah di-deploy dengan izin akses yang sesuai.'); };
+      script.src = API_URL + (API_URL.includes('?') ? '&' : '?') + 'action=data&callback=' + encodeURIComponent(callbackName) + '&_=' + Date.now();
+      document.head.appendChild(script);
+    }
+
+    function renderTable(data, headers) {
+      const theadRow = document.getElementById('tableHeaderRow'), tbody = document.getElementById('tableBody');
+      theadRow.innerHTML = ''; tbody.innerHTML = '';
+      if (!headers.length) { tbody.innerHTML = '<tr><td class="text-center text-muted py-5">Tidak ada kolom data.</td></tr>'; return; }
+      headers.forEach(function (header) { const th = document.createElement('th'); th.textContent = header; th.style.minWidth = /program|sasaran/i.test(header) ? '200px' : '120px'; theadRow.appendChild(th); });
+      if (!data.length) { tbody.innerHTML = '<tr><td colspan="' + headers.length + '" class="text-center text-muted py-5"><i class="bi bi-inbox fs-1 d-block mb-2"></i>Tidak ada data yang ditemukan</td></tr>'; return; }
+      data.forEach(function (row, index) {
+        const tr = document.createElement('tr'); tr.className = 'fade-in'; tr.style.animationDelay = Math.min(index * .01, .3) + 's';
+        headers.forEach(function (header) {
+          const td = document.createElement('td'); const value = row[header] || '-';
+          if (/target/i.test(header)) { const span = document.createElement('span'); span.className = 'badge-target'; span.textContent = formatAsPercentage(value); td.appendChild(span); }
+          else if (/realisasi/i.test(header)) { const span = document.createElement('span'); span.className = 'badge-realization'; span.textContent = value; td.appendChild(span); }
+          else if (/program/i.test(header)) { const span = document.createElement('span'); span.className = 'badge-program'; span.textContent = value; td.appendChild(span); }
+          else td.textContent = value;
+          tr.appendChild(td);
+        }); tbody.appendChild(tr);
+      });
+    }
+
+    function exportToExcel() {
+      if (!allData.length) return showToast('Tidak ada data untuk di-export', 'warning');
+      try {
+        const excelData = allData.map(function (row) { const item = {}; tableHeaders.forEach(function (header) { let value = row[header] || ''; if (/target/i.test(header)) value = formatAsPercentage(value); item[header] = value; }); return item; });
+        const ws = XLSX.utils.json_to_sheet(excelData); ws['!cols'] = tableHeaders.map(function (header) { return { wch: Math.max(header.length, 20) }; });
+        const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, 'RPJMD Data'); XLSX.writeFile(wb, 'RPJMD_2025-2030_' + dateStamp() + '.xlsx'); showToast('File Excel berhasil di-download!', 'success');
+      } catch (error) { showToast('Gagal export Excel: ' + error.message, 'error'); }
+    }
+
+    function exportToPDF() {
+      if (!allData.length) return showToast('Tidak ada data untuk di-export', 'warning');
+      try {
+        const jsPDF = window.jspdf.jsPDF, doc = new jsPDF('l', 'mm', 'a4');
+        doc.setFontSize(16); doc.setTextColor(13, 55, 42); doc.text('RPJMD 2025-2030', 15, 15);
+        doc.setFontSize(10); doc.setTextColor(100, 100, 100); doc.text('Rencana Pembangunan Jangka Menengah Daerah', 15, 22); doc.text('Dicetak: ' + new Date().toLocaleString('id-ID'), 15, 28);
+        const body = allData.map(function (row) { return tableHeaders.map(function (header) { let value = row[header] || '-'; if (/target/i.test(header)) value = formatAsPercentage(value); return String(value); }); });
+        doc.autoTable({ head: [tableHeaders.map(function (header) { return header.toUpperCase(); })], body: body, startY: 35, theme: 'grid', headStyles: { fillColor: [13, 55, 42], textColor: 255, fontStyle: 'bold', fontSize: 8 }, bodyStyles: { fontSize: 7, textColor: 50 }, alternateRowStyles: { fillColor: [240, 253, 244] }, margin: { top: 35, left: 10, right: 10 }, horizontalPageBreak: true, horizontalPageBreakRepeat: 0 });
+        doc.save('RPJMD_2025-2030_' + dateStamp() + '.pdf'); showToast('File PDF berhasil di-download!', 'success');
+      } catch (error) { showToast('Gagal export PDF: ' + error.message, 'error'); }
+    }
+
+    function printTable() { if (!allData.length) return showToast('Tidak ada data untuk dicetak', 'warning'); window.print(); }
+    function showToast(message, type) {
+      const el = document.getElementById('exportToast'), icon = document.getElementById('toastIcon'); document.getElementById('toastMessage').textContent = message;
+      const settings = { success: ['bi-check-circle-fill text-success', '#10b981'], error: ['bi-exclamation-triangle-fill text-danger', '#ef4444'], warning: ['bi-exclamation-circle-fill text-warning', '#f59e0b'] }[type] || ['bi-info-circle-fill text-primary', '#3b82f6'];
+      icon.className = 'bi ' + settings[0] + ' me-2'; el.style.borderLeftColor = settings[1]; if (toast) toast.show();
+    }
+    function formatAsPercentage(value) {
+      if (!value || value === '-') return '-'; const original = String(value).trim(); if (original.includes('%')) return original;
+      const normalized = original.replace(/\s/g, '').replace(',', '.'); const number = Number(normalized); if (!Number.isFinite(number)) return original;
+      if (number > 0 && number <= 1 && normalized.length <= 4) return (number * 100).toFixed(0) + '%'; return number + '%';
+    }
+    function filterData(searchTerm) { if (!searchTerm) return renderTable(allData, tableHeaders); const filtered = allData.filter(function (row) { return Object.values(row).some(function (value) { return value && String(value).toLowerCase().includes(searchTerm); }); }); renderTable(filtered, tableHeaders); }
+    function refreshData() { loadData(); }
+    function showLoading(show) { document.getElementById('loadingSpinner').classList.toggle('show', show); }
+    function showTable(show) { document.getElementById('tableContainer').style.display = show ? 'block' : 'none'; }
+    function showError(message) { document.getElementById('errorText').textContent = message; document.getElementById('errorMessage').classList.add('show'); }
+    function hideError() { document.getElementById('errorMessage').classList.remove('show'); }
+    function dateStamp() { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
+  </script>
+</body>
+</html>
